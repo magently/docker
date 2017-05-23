@@ -1,0 +1,34 @@
+{
+    "name": "magently/magento2",
+    "description": "Environment for Magento 2 module",
+    "require": {
+        "php": "~5.5.0|~5.6.0|~7.0.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "phpmd/phpmd": "@stable",
+        "phpunit/phpcov": "^2.0",
+        "sebastian/phpcpd": "^2.0"
+    },
+    "scripts": {
+        "post-update-cmd": "phpcs --config-set ignore_errors_on_exit 1 && phpcs --config-set ignore_warnings_on_exit 1",
+        "build": [
+            "@phpcs",
+            "@phpmd",
+            "@phpcpd",
+            "@phpunit"
+        ],
+        "phpcs": "phpcs --ignore=$MODULE_PATH/lib --standard=phpcs.ruleset.xml --extensions=php,phtml --report=checkstyle --report-file=./reports/phpcs.checkstyle.xml $MODULE_PATH",
+        "phpmd": "phpmd $MODULE_PATH xml phpmd.ruleset.xml --exclude $MODULE_PATH/lib/ --reportfile ./reports/phpmd.pmd.xml || [ $? -eq 2 ]",
+        "phpcpd": "phpcpd --exclude=$MODULE_PATH/lib --log-pmd=./reports/phpcpd.cpd.xml --min-tokens=50 --min-lines=5 -n -q $MODULE_PATH || true",
+        "phpunit": [
+            "mkdir ./reports/coverage || true",
+            "@phpunit:unit",
+            "@phpunit:integration",
+            "@phpunit:cov"
+        ],
+        "phpunit:unit": "cd $MAGENTO_PATH/dev/tests/unit && php ../../../vendor/bin/phpunit --coverage-php $APPLICATION_PATH/reports/coverage/unit.cov --log-junit $APPLICATION_PATH/reports/phpunit.junit.xml || true",
+        "phpunit:integration": "cd $MAGENTO_PATH/dev/tests/integration && php ../../../vendor/bin/phpunit --coverage-php $APPLICATION_PATH/reports/coverage/integration.cov --log-junit $APPLICATION_PATH/reports/phpunit.integration.junit.xml || true",
+        "phpunit:cov": "phpcov merge ./reports/coverage --clover ./reports/clover.xml"
+    }
+}

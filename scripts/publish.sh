@@ -5,6 +5,9 @@ set -e
 docker push magently/base:php5
 docker push magently/base:php7
 
+# Publish magento image
+docker push magently/magento
+
 # Publish magento2-env image
 docker push magently/magento2-env
 

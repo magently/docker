@@ -44,6 +44,60 @@ services:
     image: mysql:5.7
 ~~~
 
+### Magento (M1)
+
+* Built ontop Base image
+* Pre-installed with Magento 1.9.2.0 with Sample Data
+* Cron runs every minute with `cron.php`
+* Pre-configured with basic lints
+
+#### Common use cases
+
+* Whole site development
+* Module development
+* Static analysis
+* Unit testing
+* Functional testing
+
+#### Usage 
+
+You can use this image with simple docker-compose file:
+
+~~~
+version: '2'
+
+services:
+  # MySQL container
+  db:
+    image: mysql:5.6
+    environment:
+      - MYSQL_DATABASE=db
+      - MYSQL_ROOT_PASSWORD=secret
+
+  # App container
+  app:
+    image: magently/magento
+    ports:
+      - "80:80"
+    links:
+      - db
+    volumes:
+      - ./module:/app/packages
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=db
+~~~
+
+#### Running analysis
+
+To run pre-configured analysis simply use those commands:
+
+~~~
+$ docker-compose exec bash -c 'cd /app && gosu application composer run-script test'
+~~~
+
 ## Magento2-env
 
 * Built from 'magently/base:php-7'

@@ -1,0 +1,1 @@
+*/1 * * * * echo "Running cron.php" 1>/proc/1/fd/1 && /sbin/gosu application /usr/bin/php /var/www/html/magento/cron.php 2>/proc/1/fd/2

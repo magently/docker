@@ -1,0 +1,17 @@
+languages:
+  - javascript
+  - coffeescript
+  - typescript
+  - php
+  - jsx
+  - yaml
+  - swift
+  - twig
+  - htmlmixed
+files:
+  - "$MODULE_PATH/web"
+exclude:
+  - "**/*.min.js"
+  - "**/vendor/**"
+reporter: xml
+output: reports/jscpd.cpd.xml

@@ -9,6 +9,10 @@ RUN /usr/local/bin/apt-install \
         ant \
         # Install npm
         npm \
+        # Install mysql-client
+        mysql-client \
+        # Install patch
+        patch \
     # Install node LTS
     && npm install -g n \
     && n lts \

@@ -1,14 +1,17 @@
-FROM webdevops/php-apache-dev:debian-8-php7
+FROM webdevops/php-apache-dev:debian-9
 
 COPY conf/ /opt/docker/
 
+# Add apt sources for nodejs
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+
 RUN /usr/local/bin/apt-install \
         # Install java
-        openjdk-7-jre-headless \
+        openjdk-8-jre-headless \
         # Install ant
         ant \
-        # Install npm
-        npm \
+        # Install nodejs
+        nodejs \
         # Install mysql-client
         mysql-client \
         # Install patch

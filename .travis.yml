@@ -1,0 +1,37 @@
+dist: trusty
+sudo: true
+language: shell
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_USER=magently
+    - DOCKER_EMAIL=hello@magently.com
+    - MAGENTO_MARKETPLACE_USER=a8788faf07814bec5bd422e7e148122e
+    - secure: "Ah3/wZlh9mdNhA81vgEpDbE3aeXS8jr6joESphAJaUxF0R9yd6f4mHtD5YecVT4uzIn2pr60fXA4IPAuVNVlZo36+wXNYFMXbzUFYaOW0mA+sd8w0AEGRHMjReaer1zTopb3rRt8XJxJlKTHMcgLaAAGNyYcr/DC3TyDvsix07GY9nEhAtrbVZmzOWUQifkGOHEZYm57wRGNec95CRMGBrmxNdgaE2UZoLSdEAMxg99Xyjs9LDxa1w303IbL2hnbyYq5cSKLHLTaOCjut33jdYILAffgIYHL1D9lcNdUQbSx8U05PG2EbdQnMJbcvRAaxro38QXwHAiQaxPYgioaLwupa5wSVkdD/YZvApI7DE2X9WDQyc5EJC2AHKkT2BWVrL1IfDCwYu1jZJQDCgjoi/OisGrXABVrFVauWXSnvgz2OeNYnCjlXME3KRyby1m3sxg+sgHPkIKAVyfh3jD6TKVCMlvh1OevnGgxJTDIImlAWGOYF9VSSKTX/Yt9UzRep24E5FXeJkX5XDFn4zuyOiK0qLStQcQmupcI8A5JPr+I9oX7S+9vYKskt5geeCJEv2P/uxO5Qw6ZxjyaOHLHloYwO6w0JnC0830YytbU0DNVljm2cyOYODsdp/uMueQNlhQiEQxMHRx47peLrDqzsh9J64uDWUCriKAO1wbD93M=" # MAGENTO_MARKETPLACE_PASS
+    - secure: "VtSEUBaUlqC9kvNqHGgAqu2/AeTtuqQZpBk/2fW+m3EScrRvkKCk30Aek0dDtjeH4EUQeUYSY1m8XmxCi6KSBNciJ7/OF/WMXsj67pgxG8X4KKP5zhnogddJIi0kYob3UH/FLnjAZHr0abPiv9TkQGUeY5Yj/LNwNjhRx71IMajpba7du2COcHHOq0H9SXHG/e6lURKBNa9J4xnRbo8BaFuNKoKEIjQ9tDnyEaQan+DWzjWx/TL1k0q9zW0KYoIxyO0AhoniJ1qJ5LnK0eqs1mQuwhfYrST3FPZ3oRYjQFNimcsOnyuoSedxPbynyypsHhOQc9rHfRUhExb5X/m636tlfskxPPcoWGRaJspMHyFVtXO7uGOjSFyDlFcBWkyJeF6bWrHxpGdGB1G8mn0M6aNbwtYLUf48ZOD53Y1ij3uKnIrP0fyLBh3WPsbtvcgtWwD2w7EkO+9s5uk6jRQ1qO+yKdevcBfeZ4QfnTs7y/Ck/U971+7cShMLwv5MrsDPuI5aIfxCQxCkMjeWGyRYrGn6hg5YajDQ5vqBXJsRDcsoI1BORsku8tGnjrtIjfXMF+QTX5lqOSYNsHz8UJb11WWlq8Qnzgmk+W9t2v81IMs2T53ASOPPoGDM/y8njwSgvVrGv2dqI2RMY3coQbUTYP2RDnNlaWkUmZ7YsYHRngs=" # DOCKER_PASS
+
+before_script:
+  - >
+    export COMPOSER_AUTH="{
+      \"http-basic\": {
+        \"repo.magento.com\": {
+          \"username\": \"$MAGENTO_MARKETPLACE_USER\",
+          \"password\": \"$MAGENTO_MARKETPLACE_PASS\"
+        }
+      }
+    }"
+
+script: scripts/build.sh
+
+before_deploy:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+
+deploy:
+  provider: script
+  script: scripts/publish.sh
+  skip_cleanup: true
+  on:
+    branch: master

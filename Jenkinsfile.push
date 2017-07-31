@@ -1,0 +1,12 @@
+node {
+    stage('Checkout') {
+        checkout scm
+    }
+
+    stage('Push') {
+        sshagent(credentials: ["${env.SSH_CREDENTIALS}"]) {
+            sh 'git fetch origin'
+            sh 'git push $UPSTREAM_REPO_URL origin/master:master'
+        }
+    }
+}

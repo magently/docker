@@ -19,9 +19,10 @@ sed -i "s#<token>[^<]*</token>#<token>$MAGENTO_INTEGRATION_TOKEN</token>#" \
     "$MAGENTO_PATH/dev/tests/functional/etc/config.xml"
 
 # Enable all psr-4 namespaces in functional tests autoloader
-cat "$MAGENTO_PATH/composer.json \
+cat "$MAGENTO_PATH/dev/tests/functional/composer.json" \
     | jq '.autoload["psr-4"][""] = ["lib", "testsuites", "generated", "tests/app"]' \
-    | gosu application sponge "$MAGENTO_PATH/composer.json
+    | gosu application sponge "$MAGENTO_PATH/dev/tests/functional/composer.json"
+gosu application composer dump-autoload -d "$MAGENTO_PATH/dev/tests/functional"
 
 # Generate functional test fixtures
 gosu application php -f "$MAGENTO_PATH/dev/tests/functional/utils/generate.php"

@@ -4,6 +4,15 @@ node {
     }
 
     stage('Build') {
-        sh './scripts/build.sh'
+        withCredentials(
+            [
+                string(
+                    credentialsId: "${MAGENTO_KEY_ID}",
+                    variable: 'COMPOSER_AUTH'
+                )
+            ]
+        ) {
+            sh './scripts/build.sh'
+        }
     }
 }

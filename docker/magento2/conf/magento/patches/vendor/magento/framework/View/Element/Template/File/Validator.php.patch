@@ -1,0 +1,8 @@
+111,113c111,113
+<                     || $this->isPathInDirectories($filename, $this->_themesDir)
+<                     || $this->_isAllowSymlinks)
+<                 && $this->getRootDirectory()->isFile($this->getRootDirectory()->getRelativePath($filename));
+---
+>                     || $this->isPathInDirectories($filename, $this->_themesDir))
+>                 && $this->getRootDirectory()->isFile($this->getRootDirectory()->getRelativePath($filename))
+>                 || $this->_isAllowSymlinks;

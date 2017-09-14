@@ -130,3 +130,88 @@ every package in `./packages` directory:
 ~~~
 $ docker-compose exec bash -c 'cd /app && gosu application composer run-script test'
 ~~~
+
+## Magento2
+
+* Built from 'magently/magento2-env'
+* Pre-installed Magento in /var/www/magento
+* Installs all packages on start located in /app/packages
+
+This images are meant for Magento 2 integrating, you can
+test your packages with various Magento 2 versions easily
+with this image.
+
+#### Tags
+
+- latest - Image with latest Magento 2
+- 2.X.Y  - Image with Magento 2.X.Y
+
+#### Usage
+
+Assuming directory structure like below:
+
+* docker-compose.yml
+* packages            - additional magento packages
+  + namespace/name1
+  + ...
+
+You can run this image with following `docker-compose` config:
+
+~~~
+version: '2'
+
+services:
+  # MySQL container
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: db
+
+  # App container
+  app:
+    image: magently/magento2
+    links:
+      - db
+    ports:
+      - 80:80
+    volumes:
+      - ./packages/:/app/packages/
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=db
+
+  ##
+  # OPTIONALLY FOR FUNCTIONAL TESTING:
+  ##
+
+      - SELENIUM_HOST=hub
+      - SELENIUM_PORT=4444
+      - SELENIUM_BROWSER=Mozilla Firefox
+      - SELENIUM_BROWSER_NAME=firefox
+    extra_hosts:
+      - "magento.localhost:127.0.0.1"
+
+  # Selenium container
+  hub:
+    image: selenium/hub:2.53.1
+    links:
+      - app:magento.localhost
+
+  firefox:
+    image: selenium/node-firefox:2.53.1
+    links:
+      - hub
+    environment:
+      HUB_PORT_4444_TCP_ADDR: hub
+      HUB_PORT_4444_TCP_PORT: 4444
+~~~
+
+Having this set up you can run static-analysis and tests on
+every package in `./packages` directory:
+
+~~~
+$ docker-compose exec bash -c 'cd /app && gosu application composer run-script test'
+~~~

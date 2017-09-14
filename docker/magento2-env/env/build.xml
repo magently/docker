@@ -1,0 +1,58 @@
+<project name="magento" default="build">
+
+  <target name="install">
+    <echo>Installing...</echo>
+    <parallel>
+      <exec executable="composer" failonerror="true">
+        <arg line="install" />
+        <arg line="-q" />
+      </exec>
+      <exec executable="npm" failonerror="true">
+        <arg line="install" />
+        <arg line="-s" />
+      </exec>
+    </parallel>
+    <echo>Installing... Done</echo>
+  </target>
+
+  <target name="build" depends="install">
+    <echo>Building...</echo>
+    <exec executable="npm" failonerror="true">
+      <arg line="--no-color run build" />
+    </exec>
+    <exec executable="composer" failonerror="true">
+      <arg line="run-script --dev build" />
+    </exec>
+    <echo>Building... Done</echo>
+  </target>
+
+  <target name="lint">
+    <echo>Linting...</echo>
+    <parallel>
+      <exec executable="npm" failonerror="true">
+        <arg line="run --no-color lint" />
+      </exec>
+      <exec executable="composer" failonerror="true">
+        <arg line="run-script --dev lint" />
+      </exec>
+    </parallel>
+    <echo>Linting... Done</echo>
+  </target>
+
+  <target name="test">
+    <echo>Testing...</echo>
+    <exec executable="npm" failonerror="true">
+      <arg line="run --no-color test" />
+    </exec>
+    <exec executable="composer" failonerror="true">
+      <arg line="run-script --dev test" />
+    </exec>
+    <echo>Testing... Done</echo>
+  </target>
+
+  <target name="work" depends="install">
+    <echo>Working...</echo>
+    <echo>Working... Done</echo>
+  </target>
+
+</project>

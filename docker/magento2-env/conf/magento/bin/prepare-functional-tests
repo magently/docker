@@ -1,0 +1,27 @@
+#!/bin/bash
+set -e
+
+# Exit if SELENIUM_HOST is not specified
+[ -z "$SELENIUM_HOST" ] && exit
+
+# Wait for apache
+dockerize -wait $MAGENTO_URL -timeout 30s
+
+# Get integration token
+MAGENTO_INTEGRATION_TOKEN="$(
+  curl -X POST "$MAGENTO_URL/rest/V1/integration/admin/token" \
+    -H "Content-Type:application/json" \
+    -d "{\"username\": \"$MAGENTO_ADMIN_USERNAME\", \"password\": \"$MAGENTO_ADMIN_PASSWORD\"}" | tr -d '"'
+)"
+
+# Replace integration token
+sed -i "s#<token>[^<]*</token>#<token>$MAGENTO_INTEGRATION_TOKEN</token>#" \
+    "$MAGENTO_PATH/dev/tests/functional/etc/config.xml"
+
+# Enable all psr-4 namespaces in functional tests autoloader
+cat "$MAGENTO_PATH/composer.json \
+    | jq '.autoload["psr-4"][""] = ["lib", "testsuites", "generated", "tests/app"]' \
+    | gosu application sponge "$MAGENTO_PATH/composer.json
+
+# Generate functional test fixtures
+gosu application php -f "$MAGENTO_PATH/dev/tests/functional/utils/generate.php"

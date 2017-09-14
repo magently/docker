@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Magento">
+    <description>Magento coding standard.</description>
+
+    <config name="installed_paths" value="vendor/magento-ecg/coding-standard,vendor/magento/marketplace-eqp,vendor/wimg/php-compatibility" />
+    <config name="ignore_errors_on_exit" value="1" />
+    <config name="ignore_warnings_on_exit" value="1" />
+
+    <!-- Magento Code Sniffer Coding Standard -->
+    <rule ref="EcgM2" />
+
+    <!-- Magento Extension Quality Program Coding Standard -->
+    <rule ref="MEQP2" />
+    <rule ref="MEQP2.Classes.ObjectManager.ObjectManagerFound">
+        <exclude-pattern>*/*Test.php</exclude-pattern>
+    </rule>
+
+    <!-- PSR2 Standard -->
+    <rule ref="PSR2" />
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamComment" />
+    </rule>
+    <rule ref="Squiz.Commenting.FunctionCommentThrowTag" />
+    <rule ref="Squiz.Commenting.ClassComment" />
+    <rule ref="Squiz.Commenting.FileComment">
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
+    </rule>
+    <rule ref="Squiz.Commenting.VariableComment" />
+
+    <!-- PHP Compatibility -->
+    <config name="testVersion" value="5.6-" />
+    <rule ref="PHPCompatibility" />
+</ruleset>

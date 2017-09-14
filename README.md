@@ -43,3 +43,90 @@ services:
   db:
     image: mysql:5.7
 ~~~
+
+## Magento2-env
+
+* Built from 'magently/base:php-7'
+* Triggers Magento setup on start
+* Magento should be mounted in /var/www/magento directory
+* Pre-configured static-analysis
+* Pre-configured tests
+
+This image is tuned to run Magento with lowest effort.
+
+#### Usage
+
+Assuming directory structure like below:
+
+* docker-compose.yml
+* project             - magento root directory
+* packages            - additional magento packages
+  + namespace/name1
+  + ...
+
+You can run this image with following `docker-compose` config:
+
+~~~
+version: '2'
+
+services:
+  # MySQL container
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: db
+
+  # App container
+  app:
+    image: magently/magento2-env
+    links:
+      - db
+    ports:
+      - 80:80
+    volumes:
+      - ./project/:/var/www/magento/
+      - ./packages/:/app/packages/
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=db
+      - COMPOSER_AUTH={"http-basic":{"repo.magento.com":{"username":"<username>","password":"<password>"}}}
+
+  ##
+  # OPTIONALLY FOR FUNCTIONAL TESTING
+  # MERGE DIRECTIVES BELOW:
+  ##
+    volumes:
+      - ./path/to/custom/credentials.xml.tmpl:/opt/docker/magento/templates/dev/tests/functional/credentials.xml.tmpl
+      - ./packages/path/to/package/Test/functional:/var/www/magento/dev/tests/functional/tests/app/<vendor>/<namespace>/Test
+    environment:
+      - SELENIUM_HOST=hub
+      - SELENIUM_PORT=4444
+      - SELENIUM_BROWSER=Mozilla Firefox
+      - SELENIUM_BROWSER_NAME=firefox
+    extra_hosts:
+      - "magento.localhost:127.0.0.1"
+
+  # Selenium container
+  hub:
+    image: selenium/hub:2.53.1
+    links:
+      - app:magento.localhost
+
+  firefox:
+    image: selenium/node-firefox:2.53.1
+    links:
+      - hub
+    environment:
+      HUB_PORT_4444_TCP_ADDR: hub
+      HUB_PORT_4444_TCP_PORT: 4444
+~~~
+
+Having this set up you can run static-analysis and tests on
+every package in `./packages` directory:
+
+~~~
+$ docker-compose exec bash -c 'cd /app && gosu application composer run-script test'
+~~~

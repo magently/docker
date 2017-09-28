@@ -26,3 +26,6 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 RUN adduser www-data application \
     && adduser application www-data
+
+# Disable memory limit in PHP-CLI
+RUN sed -i 's/^memory_limit\s*=.*$/memory_limit = -1/' /etc/php5/cli/conf.d/98-webdevops.ini

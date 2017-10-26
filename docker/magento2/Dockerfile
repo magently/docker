@@ -15,7 +15,7 @@ RUN \
         && composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $MAGENTO_PATH `[ $MAGENTO_VERSION = 'latest' ] && echo '' || echo '$MAGENTO_VERSION'` \
         && composer config -d $MAGENTO_PATH minimum-stability dev 2>/dev/null" \
     # Install functional tests dependencies
-    && gosu "www-data" composer install -d "$MAGENTO_PATH/dev/tests/functional" \
+    && gosu "www-data" composer install -q -d "$MAGENTO_PATH/dev/tests/functional" \
     # Clean up composer cache
     && rm -r /var/www/.composer \
     # Apply magento patches

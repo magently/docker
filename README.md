@@ -46,8 +46,8 @@ services:
 
 ### Magento (M1)
 
-* Built ontop Base image
-* Pre-installed with Magento 1.9.2.0 with Sample Data
+* Built from `magently/base` image
+* Pre-installed with Magento 1 + Sample Data
 * Cron runs every minute with `cron.php`
 * Pre-configured with basic lints
 

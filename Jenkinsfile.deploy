@@ -12,11 +12,7 @@ node {
                 )
             ]
         ) {
-            sh './scripts/build.sh'
+            sh './scripts/build.sh --publish'
         }
-    }
-
-    stage('Publish') {
-        sh './scripts/publish.sh'
     }
 }

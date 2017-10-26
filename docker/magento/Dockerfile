@@ -42,12 +42,13 @@ RUN /usr/local/bin/apt-install \
     && chmod g+s /var/www \
 
     # Get magento
-    && wget http://mirror.gunah.eu/magento/magento-$MAGENTO_VERSION.tar.gz -O /tmp/magento-$MAGENTO_VERSION.tar.gz \
-    && gosu "www-data" tar -xzf /tmp/magento-$MAGENTO_VERSION.tar.gz -C /var/www \
+    && wget -nv https://github.com/OpenMage/magento-mirror/archive/$MAGENTO_VERSION.tar.gz -O /tmp/magento-$MAGENTO_VERSION.tar.gz \
+    && gosu "www-data" tar -xzf /tmp/magento-$MAGENTO_VERSION.tar.gz -C /tmp \
+    && mv /tmp/magento-mirror-$MAGENTO_VERSION $MAGENTO_PATH \
     && rm /tmp/magento-$MAGENTO_VERSION.tar.gz \
-    && wget http://mirror.gunah.eu/magento/sample-data/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz -O /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz \
+    && wget -nv http://mirror.gunah.eu/magento/sample-data/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz -O /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz \
     && gosu "www-data" tar -xzf /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz -C /tmp \
-    && cp -a /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION/media/. $MAGENTO_PATH/media/ \
+    && (cp -a /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION/media/. $MAGENTO_PATH/media/ || true) \
     && (cp -a /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION/skin/. $MAGENTO_PATH/skin/ || true) \
     && mv /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION/magento_sample_data_for_$MAGENTO_SAMPLE_VERSION.sql $MAGENTO_PATH \
     && chmod g+w -R $MAGENTO_PATH \

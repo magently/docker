@@ -1,6 +1,9 @@
 {
     "name": "magently/magento2-env",
     "description": "Environment for Magento 2",
+    "config": {
+        "process-timeout": 1000
+    },
     "require": {
         "php": "~5.5.0|~5.6.0|~7.0.0"
     },

@@ -20,6 +20,3 @@ for package in $packages; do
         exit 2
     fi
 done
-
-# Wait for database
-dockerize -timeout 30s -wait tcp://$MYSQL_HOST:3306

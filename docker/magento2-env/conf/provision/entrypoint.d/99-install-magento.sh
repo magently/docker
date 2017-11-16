@@ -9,6 +9,9 @@ find "/opt/docker/magento/templates" -type f -name "*.tmpl" | sed "s#\(^/opt/doc
   gosu "application" dockerize -template "/opt/docker/magento/templates/$tpl.tmpl:$MAGENTO_PATH/$tpl"
 done
 
+# Check if database is available
+getent hosts $MYSQL_HOST > /dev/null || { echo "Database not available?... skipping installation"; return; }
+
 # Wait for database
 dockerize -timeout 30s -wait tcp://$MYSQL_HOST:3306
 

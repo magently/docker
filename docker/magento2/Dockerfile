@@ -15,8 +15,11 @@ RUN \
         && composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $MAGENTO_PATH `[ $MAGENTO_VERSION = 'latest' ] && echo '' || echo '$MAGENTO_VERSION'` 2>/dev/null" \
     # Install functional tests dependencies
     && gosu "www-data" composer install -q -d "$MAGENTO_PATH/dev/tests/functional" \
+    # Require phpunit/phpcov globally \
+    && php_code_coverage_version=$(gosu "www-data" bash -c "cd $MAGENTO_PATH && composer show phpunit/php-code-coverage | grep 'versions :' | cut -d ' ' -f4") \
+    && gosu "www-data" bash -c "composer global require phpunit/php-code-coverage:$php_code_coverage_version phpunit/phpcov:*" \
     # Clean up composer cache
-    && rm -r /var/www/.composer \
+    && rm -r /var/www/.composer/cache \
     # Apply magento patches
     && find "/opt/docker/magento/patches" -type f -name "*.patch" | \
         sed "s#\(^/opt/docker/magento/patches/\|\.patch$\)##g" | \

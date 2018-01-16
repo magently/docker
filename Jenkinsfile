@@ -1,44 +1,16 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Base') {
-            steps {
-                sh './scripts/build.sh base'
-            }
-        }
-
-        stage('Magento') {
-            parallel {
-                stage('Magento 1') {
-                    steps {
-                        sh './scripts/build.sh magento `scripts/versions.sh git://github.com/openmage/magento-mirror ${MAGENTO_BUILDS}`'
-                    }
-                }
-
-                stage('Magento 2') {
-                    steps {
-                        sh './scripts/build.sh magento2-env'
-
-                        withCredentials(
-                            [
-                                string(
-                                    credentialsId: "${MAGENTO_KEY_ID}",
-                                    variable: 'COMPOSER_AUTH'
-                                )
-                            ]
-                        ) {
-                            sh './scripts/build.sh magento2 `scripts/versions.sh git://github.com/magento/magento2 ${MAGENTO2_BUILDS}`'
-                        }
-                    }
-                }
-            }
-        }
+node('docker') {
+    stage('Init') {
+        deleteDir()
+        checkout scm
     }
+
+    publish = false
+    utils = load 'dev/jenkins/utils.groovy'
+
+    magentoVersions = utils.getVersions('git://github.com/openmage/magento-mirror', env.MAGENTO_VERSION_CONSTRAINT ?: "1.[1].[1].[1]:latest")
+    magento2Versions = utils.getVersions('https://github.com/magento/magento2', env.MAGENTO2_VERSION_CONSTRAINT ?: "2.[1].[1]:latest")
+
+    pipeline = load 'dev/jenkins/build.groovy'
 }
+
+pipeline.pipeline()

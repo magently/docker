@@ -36,6 +36,9 @@ case $to_build in
     ;;
 
     "magento")
+        # pull parent image
+        docker pull magently/base:php5
+
         # build magento images
         echo "Building magento images: $(echo $versions | xargs)"
         for build in $versions; do
@@ -44,7 +47,9 @@ case $to_build in
 
             echo "Building magento image: $version"
 
-            if [ $(echo "$version" | sed 's/\.//g') -ge 1910 ]; then
+            if [ $(echo "$version" | sed 's/\.//g') -ge 1924 ]; then
+                sample_version=1.9.2.4
+            elif [ $(echo "$version" | sed 's/\.//g') -ge 1910 ]; then
                 sample_version=1.9.1.0
             elif [ $(echo "$version" | sed 's/\.//g') -ge 1900 ]; then
                 sample_version=1.9.0.0
@@ -70,12 +75,18 @@ case $to_build in
     ;;
 
     "magento2-env")
+        # pull parent image
+        docker pull magently/base:php7
+
         # build magento2-env image
         echo "Building magento2-env image:"
         docker build -q -t magently/magento2-env ./docker/magento2-env && tags+=("magently/magento2-env")
     ;;
 
     "magento2")
+        # pull parent image
+        docker pull magently/magento2-env
+
         # build magento2 images
         echo "Building magento2 images: $(echo $versions | xargs)"
         for build in $versions; do

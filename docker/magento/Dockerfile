@@ -46,7 +46,7 @@ RUN /usr/local/bin/apt-install \
     && gosu "www-data" tar -xzf /tmp/magento-$MAGENTO_VERSION.tar.gz -C /tmp \
     && mv /tmp/magento-mirror-$MAGENTO_VERSION $MAGENTO_PATH \
     && rm /tmp/magento-$MAGENTO_VERSION.tar.gz \
-    && wget -nv http://mirror.gunah.eu/magento/sample-data/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz -O /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz \
+    && wget -nv https://github.com/magently/magento-compressed-sample-data/raw/master/$MAGENTO_SAMPLE_VERSION/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz -O /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz \
     && gosu "www-data" tar -xzf /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION.tar.gz -C /tmp \
     && (cp -a /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION/media/. $MAGENTO_PATH/media/ || true) \
     && (cp -a /tmp/magento-sample-data-$MAGENTO_SAMPLE_VERSION/skin/. $MAGENTO_PATH/skin/ || true) \

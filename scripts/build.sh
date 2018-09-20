@@ -110,6 +110,10 @@ case $to_build in
         done
     ;;
 
+    "php-test")
+        docker build -q -t magently/php-test:7.1 ./docker/php-test/7.1 && tags+=('magently/php-test:7.1')
+    ;;
+
     *)
         echo "Unknown image $to_build"
         exit 1

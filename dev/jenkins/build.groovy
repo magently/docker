@@ -6,6 +6,10 @@ def pipeline() {
         utils.createBuildStep('base', null, publish)()
     }
 
+    stage('PhpTest') {
+        utils.createBuildStep('php-test', null, publish)()
+    }
+
     stage('Magento2 env') {
         utils.createBuildStep('magento2-env', null, publish)()
     }

@@ -33,6 +33,7 @@ case $to_build in
         echo "Building base images:"
         docker build -q -t magently/base:php5 ./docker/base/php5 && tags+=('magently/base:php5')
         docker build -q -t magently/base:php7 ./docker/base/php7 && tags+=('magently/base:php7')
+        docker build -q -t magently/base:php71 ./docker/base/php71 && tags+=('magently/base:php71')
     ;;
 
     "magento")

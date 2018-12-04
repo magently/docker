@@ -77,7 +77,7 @@ case $to_build in
 
     "magento2-env")
         # pull parent image
-        docker pull magently/base:php7
+        docker pull magently/base:php71
 
         # build magento2-env image
         echo "Building magento2-env image:"

@@ -1,4 +1,4 @@
-FROM magently/base:php7
+FROM magently/base:php71
 
 ENV MAGENTO_PATH /var/www/magento
 ENV WEB_DOCUMENT_ROOT /var/www/magento/pub

@@ -140,7 +140,7 @@ services:
       - 80:80
     volumes:
       - ./project/:/var/www/magento/
-      - ./packages/:/app/packages/
+      - ./packages/:/var/www/magento/packages/
     environment:
       - MYSQL_HOST=db
       - MYSQL_USER=root
@@ -189,7 +189,7 @@ $ docker-compose exec bash -c 'cd /app && gosu application composer run-script t
 
 * Built from 'magently/magento2-env'
 * Pre-installed Magento in /var/www/magento
-* Installs all packages on start located in /app/packages
+* Installs all packages on start located in /var/www/magento/packages
 
 This images are meant for Magento 2 integrating, you can
 test your packages with various Magento 2 versions easily
@@ -230,7 +230,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./packages/:/app/packages/
+      - ./packages/:/var/www/magento/packages/
     environment:
       - MYSQL_HOST=db
       - MYSQL_USER=root

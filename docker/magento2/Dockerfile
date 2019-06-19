@@ -3,7 +3,7 @@ FROM magently/magento2-env
 ARG COMPOSER_AUTH
 ARG MAGENTO_VERSION
 
-ENV PACKAGES_PATH=/app/packages
+ENV PACKAGES_PATH=/var/www/magento/packages
 
 COPY conf/ /opt/docker/
 

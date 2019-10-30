@@ -1,7 +1,8 @@
-FROM php:7.1-stretch
+ARG php_version
+FROM "php:${php_version}"
 
 # Install dependencies
-RUN apt-get update && apt-get install -y libldap2-dev wget git unzip libpng-dev
+RUN apt-get update && apt-get install -y libldap2-dev wget git unzip libpng-dev libzip-dev
 
 # Install MySQL extension
 RUN docker-php-ext-configure pdo_mysql \

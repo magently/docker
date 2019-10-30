@@ -112,7 +112,17 @@ case $to_build in
     ;;
 
     "php-test")
-        docker build -q -t magently/php-test:7.1 ./docker/php-test/7.1 && tags+=('magently/php-test:7.1')
+        docker build -q \
+            -t magently/php-test:7.1 \
+            --build-arg php_version=7.1-buster ./docker/php-test && tags+=('magently/php-test:7.1')
+
+        docker build -q \
+            -t magently/php-test:7.2 \
+            --build-arg php_version=7.2-buster ./docker/php-test && tags+=('magently/php-test:7.2')
+
+        docker build -q \
+            -t magently/php-test:7.3 \
+            --build-arg php_version=7.3-buster ./docker/php-test && tags+=('magently/php-test:7.3')
     ;;
 
     *)

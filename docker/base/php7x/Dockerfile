@@ -1,4 +1,5 @@
-FROM webdevops/php-apache-dev:7.1
+ARG PHP_VERSION
+FROM "webdevops/php-apache-dev:${PHP_VERSION}"
 
 COPY conf/ /opt/docker/
 

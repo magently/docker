@@ -4,24 +4,24 @@ FROM "webdevops/php-apache-dev:${PHP_VERSION}"
 COPY conf/ /opt/docker/
 
 # Add apt sources for nodejs
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 # This is related to this bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199
 RUN mkdir -p /usr/share/man/man1
 
 RUN /usr/local/bin/apt-install \
         # Install java
-        openjdk-8-jre-headless \
+        openjdk-11-jre-headless \
         # Install ant
         ant \
         # Install nodejs
         nodejs \
         # Install mysql-client
-        mysql-client \
+        mariadb-client \
         # Install patch
-        patch \
-    # Install node LTS
-    && npm install -g n \
+        patch
+
+RUN npm install -g n \
     && n lts \
     && npm update -g npm \
     && docker-image-cleanup

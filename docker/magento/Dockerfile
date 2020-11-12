@@ -24,12 +24,11 @@ ENV MAGENTO_ADMIN_PASSWORD admin123
 COPY conf/ /opt/docker/
 COPY env/ $APPLICATION_PATH
 
+RUN apt-get update && apt-get -y upgrade
+
 # Add blackfire GPG
 RUN wget -q -O - https://packages.blackfire.io/gpg.key | apt-key add - \
     && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list
-
-# Fix sources.list (see https://superuser.com/questions/1423486/issue-with-fetching-http-deb-debian-org-debian-dists-jessie-updates-inrelease)
-RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
 
 # Install dependencies
 RUN /usr/local/bin/apt-install \

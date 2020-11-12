@@ -3,7 +3,7 @@ FROM webdevops/php-apache-dev:debian-9
 COPY conf/ /opt/docker/
 
 # Add apt sources for nodejs
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 RUN /usr/local/bin/apt-install \
         # Install java
@@ -15,9 +15,10 @@ RUN /usr/local/bin/apt-install \
         # Install mysql-client
         mysql-client \
         # Install patch
-        patch \
-    # Install node LTS
-    && npm install -g n \
+        patch
+
+# Install node LTS
+RUN npm install -g n \
     && n lts \
     && npm update -g npm \
     && docker-image-cleanup

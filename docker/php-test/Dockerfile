@@ -2,7 +2,7 @@ ARG php_version
 FROM "php:${php_version}"
 
 # Install dependencies
-RUN apt-get update && apt-get install -y libldap2-dev wget git unzip libpng-dev libzip-dev
+RUN apt-get update && apt-get install -y libldap2-dev wget git unzip libpng-dev libzip-dev ant
 
 # Install MySQL extension
 RUN docker-php-ext-configure pdo_mysql \

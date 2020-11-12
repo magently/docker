@@ -9,16 +9,12 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 # This is related to this bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199
 RUN mkdir -p /usr/share/man/man1
 
-RUN /usr/local/bin/apt-install \
-        # Install java
+RUN apt update && apt -y upgrade
+RUN apt -y install \
         openjdk-11-jre-headless \
-        # Install ant
         ant \
-        # Install nodejs
         nodejs \
-        # Install mysql-client
         mariadb-client \
-        # Install patch
         patch
 
 RUN npm install -g n \

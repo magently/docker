@@ -2,6 +2,7 @@ ARG php_version
 FROM "php:${php_version}"
 
 # Install dependencies
+RUN mkdir -p /usr/share/man/man1
 RUN apt-get update && apt-get install -y libldap2-dev wget git unzip libpng-dev libzip-dev ant
 
 # Install MySQL extension

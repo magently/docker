@@ -1,15 +1,3 @@
-// Helper function for versions handling
-def getVersions(url, constraints) {
-    // Get versions tool
-    sh 'wget -nv https://raw.githubusercontent.com/magently/docker/master/scripts/versions.sh -O versions.sh && chmod +x versions.sh'
-
-    def versions = sh \
-        returnStdout: true,
-        script: "./versions.sh ${url} ${constraints}"
-
-    return versions.split()
-}
-
 // Helper function for test steps creation
 def createBuildStep(image, version = null, publish = false) {
     return {

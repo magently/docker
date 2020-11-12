@@ -129,7 +129,7 @@ case $to_build in
 
         docker build -q \
             -t magently/php-test:7.4 \
-            --build-arg php_version=7.3-buster ./docker/php-test && tags+=('magently/php-test:7.3')
+            --build-arg php_version=7.4-buster ./docker/php-test && tags+=('magently/php-test:7.4')
     ;;
 
     *)

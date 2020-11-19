@@ -11,7 +11,7 @@ then
     exit 1
 fi
 
-php composer-setup.php --quiet --install-dir=/usr/local/bin --filename composer
+php composer-setup.php --quiet --install-dir=/usr/local/bin --filename composer --version 1.10.17
 RESULT=$?
 rm composer-setup.php
 exit $RESULT

@@ -55,6 +55,11 @@ case $to_build in
         docker build -q \
             -t magently/php-test:7.4 \
             --build-arg php_version=7.4-buster ./docker/php-test && tags+=('magently/php-test:7.4')
+
+        docker build -q \
+            -t magently/php-test:8.1 \
+            --build-arg php_version=8.1-bullseye --build-arg COMPOSER_VERSION=2 ./docker/php-test && tags+=('magently/php-test:8.1')
+
     ;;
 
     *)

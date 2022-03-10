@@ -1,4 +1,5 @@
 ARG php_version
+ARG COMPOSER_VERSION=1
 FROM "php:${php_version}"
 
 # Install dependencies
@@ -42,6 +43,7 @@ RUN mkdir /opt/docker
 RUN chmod 777 /opt/docker
 
 # Install Composer
+ENV COMPOSER_VERSION=${COMPOSER_VERSION}
 COPY composer.sh /opt/docker/composer.sh
 RUN bash /opt/docker/composer.sh && rm /opt/docker/composer.sh
 

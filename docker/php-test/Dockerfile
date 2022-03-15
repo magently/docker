@@ -34,6 +34,10 @@ RUN docker-php-ext-configure zip --with-libdir=lib/x86_64-linux-gnu/ \
 RUN docker-php-ext-configure calendar --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install -j$(nproc) calendar
 
+# Install Calendar extension
+RUN docker-php-ext-configure pcntl --with-libdir=lib/x86_64-linux-gnu/ \
+    && docker-php-ext-install -j$(nproc) pcntl
+
 # Install Dockerize
 RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.0/dockerize-linux-amd64-v0.6.0.tar.gz -O dockerize.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize.tar.gz \

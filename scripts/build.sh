@@ -37,6 +37,8 @@ case $to_build in
         docker build -q --build-arg PHP_VERSION=7.2 -t magently/base:php72 ./docker/base/php7x && tags+=('magently/base:php72')
         docker build -q --build-arg PHP_VERSION=7.3 -t magently/base:php73 ./docker/base/php7x && tags+=('magently/base:php73')
         docker build -q --build-arg PHP_VERSION=7.4 -t magently/base:php74 ./docker/base/php7x && tags+=('magently/base:php74')
+        docker build -q --build-arg PHP_VERSION=8.0 -t magently/base:php80 ./docker/base/php8x && tags+=('magently/base:php80')
+        docker build -q --build-arg PHP_VERSION=8.1 -t magently/base:php81 ./docker/base/php8x && tags+=('magently/base:php81')
     ;;
 
     "php-test")
